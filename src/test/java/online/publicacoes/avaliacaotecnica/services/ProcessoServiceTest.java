@@ -15,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import services.ProcessoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ class ProcessoServiceTest {
     @BeforeEach
     void setUp() {
 
-      processo2 = ProcessoFactory.getProcesso(2);
+      processo2 = ProcessoFactory.getProcesso(2L);
 
       processosRequestList = new ArrayList<>();
       processosRequestList.add(new ProcessoDTO(processo));
@@ -107,8 +106,8 @@ class ProcessoServiceTest {
     @DisplayName("Quando algum dos processos da lista existe")
     void saveShouldThrowNotAllProcessosSavedExceptionWhenSomeProcessosAlreadyExists() {
 
-      when(repository.existsByNumeroAndAtivoIsTrue(1)).thenReturn(false);
-      when(repository.existsByNumeroAndAtivoIsTrue(2)).thenReturn(true);
+      when(repository.existsByNumeroAndAtivoIsTrue(1L)).thenReturn(false);
+      when(repository.existsByNumeroAndAtivoIsTrue(2L)).thenReturn(true);
 
       NotAllProcessosSavedException result =
           assertThrows(
@@ -120,8 +119,8 @@ class ProcessoServiceTest {
       verify(repository).save(any());
 
       assertAll(
-          () -> assertEquals(1, result.getSuccess().size()),
-          () -> assertEquals(1, result.getFailed().size()));
+          () -> assertEquals(1L, result.getSuccess().size()),
+          () -> assertEquals(1L, result.getFailed().size()));
     }
 
     @Test
@@ -129,7 +128,7 @@ class ProcessoServiceTest {
     void
         saveShouldThrowDuplicatedNumbersInRequestExceptionWhenThereAreDuplicatedProcessosInRequest() {
 
-      processosRequestList.get(1).setNumero(1);
+      processosRequestList.get(1).setNumero(1L);
 
       DuplicatedNumbersInRequestException result =
           assertThrows(

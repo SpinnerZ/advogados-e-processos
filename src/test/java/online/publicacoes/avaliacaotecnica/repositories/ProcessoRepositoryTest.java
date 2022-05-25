@@ -30,7 +30,7 @@ class ProcessoRepositoryTest {
 
     repository.save(processo);
 
-    assertTrue(repository.existsByNumeroAndAtivoIsTrue(1));
+    assertTrue(repository.existsByNumeroAndAtivoIsTrue(1L));
   }
 
   @Test
@@ -41,7 +41,7 @@ class ProcessoRepositoryTest {
 
     repository.save(processo);
 
-    assertFalse(repository.existsByNumeroAndAtivoIsTrue(1));
+    assertFalse(repository.existsByNumeroAndAtivoIsTrue(1L));
   }
 
   @Test
@@ -50,6 +50,6 @@ class ProcessoRepositoryTest {
 
     repository.save(processo);
 
-    assertFalse(repository.existsByNumeroAndAtivoIsTrue(2));
+    assertFalse(repository.existsByNumeroAndAtivoIsTrue(2L));
   }
 }

@@ -29,7 +29,7 @@ public class Processo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @EqualsAndHashCode.Include private Integer numero;
+  @EqualsAndHashCode.Include private Long numero;
   private String reu;
   private Boolean ativo;
 }

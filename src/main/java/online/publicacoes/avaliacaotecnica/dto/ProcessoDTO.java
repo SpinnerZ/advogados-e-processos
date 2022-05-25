@@ -9,7 +9,7 @@ import javax.validation.constraints.Positive;
 @Data
 public class ProcessoDTO {
 
-  @NotNull @Positive private Integer numero;
+  private @NotNull @Positive Long numero;
   private String reu;
 
   public ProcessoDTO(Processo processo) {

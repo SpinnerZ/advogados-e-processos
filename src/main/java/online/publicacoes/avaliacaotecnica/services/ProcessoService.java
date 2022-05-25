@@ -1,4 +1,4 @@
-package services;
+package online.publicacoes.avaliacaotecnica.services;
 
 import online.publicacoes.avaliacaotecnica.dto.ProcessoDTO;
 import online.publicacoes.avaliacaotecnica.entities.Processo;
@@ -63,10 +63,10 @@ public class ProcessoService {
 
   private void assertThatAllNumerosAreUnique(List<ProcessoDTO> requestList) {
 
-    List<Integer> numerosList = requestList.stream().map(ProcessoDTO::getNumero).toList();
-    Set<Integer> numerosSet = new HashSet<>();
+    List<Long> numerosList = requestList.stream().map(ProcessoDTO::getNumero).toList();
+    Set<Long> numerosSet = new HashSet<>();
 
-    for (int numero : numerosList) {
+    for (long numero : numerosList) {
 
       if (!numerosSet.add(numero)) {
 

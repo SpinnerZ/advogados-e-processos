@@ -1,4 +1,4 @@
-package services;
+package online.publicacoes.avaliacaotecnica.services;
 
 import online.publicacoes.avaliacaotecnica.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

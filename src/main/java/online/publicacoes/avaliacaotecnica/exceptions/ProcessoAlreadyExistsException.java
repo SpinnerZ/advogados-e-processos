@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class ProcessoAlreadyExistsException extends RuntimeException {
 
-  private final Integer numero;
+  private final Long numero;
 }
