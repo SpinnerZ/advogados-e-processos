@@ -1,5 +1,7 @@
 package online.publicacoes.avaliacaotecnica.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -21,6 +24,8 @@ import java.util.List;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "tb_usuario")
@@ -33,7 +38,10 @@ public class Usuario {
   @EqualsAndHashCode.Include private String login;
 
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "id")
+  @JoinTable(
+      name = "tb_usuario_processo",
+      joinColumns = @JoinColumn(name = "usuario_id"),
+      inverseJoinColumns = @JoinColumn(name = "processo_id"))
   private List<Processo> processos = new ArrayList<>();
 
   private Boolean ativo;

@@ -1,8 +1,10 @@
 package online.publicacoes.avaliacaotecnica.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -15,10 +17,12 @@ import javax.persistence.Table;
 @ToString
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "tb_processo")
+@Builder
 public class Processo {
 
   @Id
