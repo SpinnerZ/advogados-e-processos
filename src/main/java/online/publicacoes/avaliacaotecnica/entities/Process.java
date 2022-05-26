@@ -37,5 +37,5 @@ public class Process {
 
   @ManyToOne
   @JoinColumn(name = "attorney_id", nullable = false)
-  private Attorney attorney;
+  private Lawyer lawyer;
 }

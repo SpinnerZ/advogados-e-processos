@@ -2,9 +2,8 @@ package online.publicacoes.avaliacaotecnica.services;
 
 import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
 import online.publicacoes.avaliacaotecnica.entities.Process;
-import online.publicacoes.avaliacaotecnica.exceptions.DuplicatedNumbersInRequestException;
 import online.publicacoes.avaliacaotecnica.exceptions.NotAllProcessosSavedException;
-import online.publicacoes.avaliacaotecnica.exceptions.ProcessoAlreadyExistsException;
+import online.publicacoes.avaliacaotecnica.exceptions.ProcessAlreadyExistsException;
 import online.publicacoes.avaliacaotecnica.factories.ProcessFactory;
 import online.publicacoes.avaliacaotecnica.repositories.ProcessRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +38,7 @@ class ProcessServiceTest {
   @BeforeEach
   void setUp() {
 
-    process = ProcessFactory.getProcesso();
+    process = ProcessFactory.getProcess();
 
     when(repository.save(any())).then(returnsFirstArg());
   }
@@ -48,15 +47,15 @@ class ProcessServiceTest {
   @DisplayName("Testes de criação")
   class SaveMethods {
 
-    List<ProcessDTO> processosRequestList;
+    Set<ProcessDTO> processosRequestList;
     Process process2;
 
     @BeforeEach
     void setUp() {
 
-      process2 = ProcessFactory.getProcesso(2L);
+      process2 = ProcessFactory.getProcess(2L);
 
-      processosRequestList = new ArrayList<>();
+      processosRequestList = new HashSet<>();
       processosRequestList.add(new ProcessDTO(process));
       processosRequestList.add(new ProcessDTO(process2));
     }
@@ -83,7 +82,7 @@ class ProcessServiceTest {
 
       ProcessDTO request = new ProcessDTO(process);
 
-      assertThrows(ProcessoAlreadyExistsException.class, () -> service.save(request));
+      assertThrows(ProcessAlreadyExistsException.class, () -> service.save(request));
 
       verify(repository).existsByNumber(any());
       verify(repository, never()).save(any());
@@ -95,7 +94,7 @@ class ProcessServiceTest {
 
       when(repository.existsByNumber(any())).thenReturn(false);
 
-      List<ProcessDTO> result = service.save(processosRequestList);
+      Set<ProcessDTO> result = service.save(processosRequestList);
 
       assertEquals(processosRequestList, result);
       verify(repository, times(2)).existsByNumber(any());
@@ -121,25 +120,6 @@ class ProcessServiceTest {
       assertAll(
           () -> assertEquals(1L, result.getSuccess().size()),
           () -> assertEquals(1L, result.getFailed().size()));
-    }
-
-    @Test
-    @DisplayName("Quando há processes duplicados na requisição")
-    void
-        saveShouldThrowDuplicatedNumbersInRequestExceptionWhenThereAreDuplicatedProcessosInRequest() {
-
-      processosRequestList.get(1).setNumber(1L);
-
-      DuplicatedNumbersInRequestException result =
-          assertThrows(
-              DuplicatedNumbersInRequestException.class,
-              (() -> service.save(processosRequestList)),
-              "Não lançou exceção quando os itens da lista tem números iguais");
-
-      verify(repository, never()).existsByNumber(any());
-      verify(repository, never()).save(any());
-
-      assertEquals(processosRequestList, result.getProcessos());
     }
   }
 }
