@@ -1,7 +1,7 @@
 package online.publicacoes.avaliacaotecnica.repositories;
 
-import online.publicacoes.avaliacaotecnica.entities.Processo;
-import online.publicacoes.avaliacaotecnica.factories.ProcessoFactory;
+import online.publicacoes.avaliacaotecnica.entities.Process;
+import online.publicacoes.avaliacaotecnica.factories.ProcessFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,44 +12,44 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-class ProcessoRepositoryTest {
+class ProcessRepositoryTest {
 
-  @Autowired ProcessoRepository repository;
+  @Autowired ProcessRepository repository;
 
-  Processo processo;
+  Process process;
 
   @BeforeEach
   void setUp() {
 
-    processo = ProcessoFactory.getProcesso();
+    process = ProcessFactory.getProcesso();
   }
 
   @Test
-  @DisplayName("Quando processo existe e está ativo")
+  @DisplayName("Quando process existe e está ativo")
   void existsByNumeroShoudReturnTrueWhenNumeroDoProcessoAlreadyExistsAndIsAtivo() {
 
-    repository.save(processo);
+    repository.save(process);
 
-    assertTrue(repository.existsByNumeroAndAtivoIsTrue(1L));
+    assertTrue(repository.existsByNumber(1L));
   }
 
   @Test
-  @DisplayName("Quando processo existe e está inativo")
+  @DisplayName("Quando process existe e está inativo")
   void existsByNumeroShoudReturnFalseWhenNumeroDoProcessoAlreadyExistsAndIsInativo() {
 
-    processo.setAtivo(false);
+    process.setArchived(false);
 
-    repository.save(processo);
+    repository.save(process);
 
-    assertFalse(repository.existsByNumeroAndAtivoIsTrue(1L));
+    assertFalse(repository.existsByNumber(1L));
   }
 
   @Test
-  @DisplayName("Quando processo não existe")
+  @DisplayName("Quando process não existe")
   void existsByNumeroShoudReturnFalseWhenNumeroDoProcessoDoesNotExists() {
 
-    repository.save(processo);
+    repository.save(process);
 
-    assertFalse(repository.existsByNumeroAndAtivoIsTrue(2L));
+    assertFalse(repository.existsByNumber(2L));
   }
 }

@@ -1,12 +1,12 @@
 package online.publicacoes.avaliacaotecnica.services;
 
-import online.publicacoes.avaliacaotecnica.dto.ProcessoDTO;
-import online.publicacoes.avaliacaotecnica.entities.Processo;
+import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
+import online.publicacoes.avaliacaotecnica.entities.Process;
 import online.publicacoes.avaliacaotecnica.exceptions.DuplicatedNumbersInRequestException;
 import online.publicacoes.avaliacaotecnica.exceptions.NotAllProcessosSavedException;
 import online.publicacoes.avaliacaotecnica.exceptions.ProcessoAlreadyExistsException;
-import online.publicacoes.avaliacaotecnica.factories.ProcessoFactory;
-import online.publicacoes.avaliacaotecnica.repositories.ProcessoRepository;
+import online.publicacoes.avaliacaotecnica.factories.ProcessFactory;
+import online.publicacoes.avaliacaotecnica.repositories.ProcessRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,16 +30,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-class ProcessoServiceTest {
+class ProcessServiceTest {
 
-  @InjectMocks ProcessoService service;
-  @Mock ProcessoRepository repository;
-  Processo processo;
+  @InjectMocks ProcessService service;
+  @Mock ProcessRepository repository;
+  Process process;
 
   @BeforeEach
   void setUp() {
 
-    processo = ProcessoFactory.getProcesso();
+    process = ProcessFactory.getProcesso();
 
     when(repository.save(any())).then(returnsFirstArg());
   }
@@ -48,66 +48,66 @@ class ProcessoServiceTest {
   @DisplayName("Testes de criação")
   class SaveMethods {
 
-    List<ProcessoDTO> processosRequestList;
-    Processo processo2;
+    List<ProcessDTO> processosRequestList;
+    Process process2;
 
     @BeforeEach
     void setUp() {
 
-      processo2 = ProcessoFactory.getProcesso(2L);
+      process2 = ProcessFactory.getProcesso(2L);
 
       processosRequestList = new ArrayList<>();
-      processosRequestList.add(new ProcessoDTO(processo));
-      processosRequestList.add(new ProcessoDTO(processo2));
+      processosRequestList.add(new ProcessDTO(process));
+      processosRequestList.add(new ProcessDTO(process2));
     }
 
     @Test
-    @DisplayName("Caminho feliz: Número do processo não existe")
+    @DisplayName("Caminho feliz: Número do process não existe")
     void saveShouldSaveAProcessoWhenItIsUnique() {
 
-      when(repository.existsByNumeroAndAtivoIsTrue(any())).thenReturn(false);
+      when(repository.existsByNumber(any())).thenReturn(false);
 
-      ProcessoDTO request = new ProcessoDTO(processo);
-      ProcessoDTO result = service.save(request);
+      ProcessDTO request = new ProcessDTO(process);
+      ProcessDTO result = service.save(request);
 
-      assertEquals(request, result, "O processo retornado não foi igual ao enviado");
-      verify(repository).existsByNumeroAndAtivoIsTrue(any());
+      assertEquals(request, result, "O process retornado não foi igual ao enviado");
+      verify(repository).existsByNumber(any());
       verify(repository).save(any());
     }
 
     @Test
-    @DisplayName("Número do processo já existe")
+    @DisplayName("Número do process já existe")
     void saveShouldProcessoAlreadyExistsExceptionWhenNumeroDoProcessoAlreadyExists() {
 
-      when(repository.existsByNumeroAndAtivoIsTrue(any())).thenReturn(true);
+      when(repository.existsByNumber(any())).thenReturn(true);
 
-      ProcessoDTO request = new ProcessoDTO(processo);
+      ProcessDTO request = new ProcessDTO(process);
 
       assertThrows(ProcessoAlreadyExistsException.class, () -> service.save(request));
 
-      verify(repository).existsByNumeroAndAtivoIsTrue(any());
+      verify(repository).existsByNumber(any());
       verify(repository, never()).save(any());
     }
 
     @Test
-    @DisplayName("Caminho feliz: Nenhum processo da lista existe")
+    @DisplayName("Caminho feliz: Nenhum process da lista existe")
     void saveShouldSaveAllProcessosWhenTheyAreUnique() {
 
-      when(repository.existsByNumeroAndAtivoIsTrue(any())).thenReturn(false);
+      when(repository.existsByNumber(any())).thenReturn(false);
 
-      List<ProcessoDTO> result = service.save(processosRequestList);
+      List<ProcessDTO> result = service.save(processosRequestList);
 
       assertEquals(processosRequestList, result);
-      verify(repository, times(2)).existsByNumeroAndAtivoIsTrue(any());
+      verify(repository, times(2)).existsByNumber(any());
       verify(repository, times(2)).save(any());
     }
 
     @Test
-    @DisplayName("Quando algum dos processos da lista existe")
+    @DisplayName("Quando algum dos processes da lista existe")
     void saveShouldThrowNotAllProcessosSavedExceptionWhenSomeProcessosAlreadyExists() {
 
-      when(repository.existsByNumeroAndAtivoIsTrue(1L)).thenReturn(false);
-      when(repository.existsByNumeroAndAtivoIsTrue(2L)).thenReturn(true);
+      when(repository.existsByNumber(1L)).thenReturn(false);
+      when(repository.existsByNumber(2L)).thenReturn(true);
 
       NotAllProcessosSavedException result =
           assertThrows(
@@ -115,7 +115,7 @@ class ProcessoServiceTest {
               (() -> service.save(processosRequestList)),
               "Não lançou exceção quando um item da lista já existia no repositório");
 
-      verify(repository, times(2)).existsByNumeroAndAtivoIsTrue(any());
+      verify(repository, times(2)).existsByNumber(any());
       verify(repository).save(any());
 
       assertAll(
@@ -124,11 +124,11 @@ class ProcessoServiceTest {
     }
 
     @Test
-    @DisplayName("Quando há processos duplicados na requisição")
+    @DisplayName("Quando há processes duplicados na requisição")
     void
         saveShouldThrowDuplicatedNumbersInRequestExceptionWhenThereAreDuplicatedProcessosInRequest() {
 
-      processosRequestList.get(1).setNumero(1L);
+      processosRequestList.get(1).setNumber(1L);
 
       DuplicatedNumbersInRequestException result =
           assertThrows(
@@ -136,7 +136,7 @@ class ProcessoServiceTest {
               (() -> service.save(processosRequestList)),
               "Não lançou exceção quando os itens da lista tem números iguais");
 
-      verify(repository, never()).existsByNumeroAndAtivoIsTrue(any());
+      verify(repository, never()).existsByNumber(any());
       verify(repository, never()).save(any());
 
       assertEquals(processosRequestList, result.getProcessos());

@@ -2,7 +2,7 @@ package online.publicacoes.avaliacaotecnica.exceptions;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import online.publicacoes.avaliacaotecnica.dto.ProcessoDTO;
+import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
 @Getter
 public class NotAllProcessosSavedException extends RuntimeException {
 
-  private final List<ProcessoDTO> success;
-  private final List<ProcessoDTO> failed;
+  private final List<ProcessDTO> success;
+  private final List<ProcessDTO> failed;
 }
