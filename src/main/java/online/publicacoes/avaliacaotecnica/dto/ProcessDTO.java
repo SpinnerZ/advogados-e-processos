@@ -22,6 +22,6 @@ public class ProcessDTO {
     this.number = process.getNumber();
     this.defendant = process.getDefendant();
     this.archived = process.getArchived();
-    this.attorneyUserName = process.getAttorney().getUsername();
+    this.attorneyUserName = process.getLawyer().getUsername();
   }
 }

@@ -21,7 +21,7 @@ class ProcessRepositoryTest {
   @BeforeEach
   void setUp() {
 
-    process = ProcessFactory.getProcesso();
+    process = ProcessFactory.getProcess();
   }
 
   @Test

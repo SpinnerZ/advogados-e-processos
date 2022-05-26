@@ -3,14 +3,13 @@ package online.publicacoes.avaliacaotecnica.services;
 import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
 import online.publicacoes.avaliacaotecnica.entities.Process;
 import online.publicacoes.avaliacaotecnica.exceptions.NotAllProcessosSavedException;
-import online.publicacoes.avaliacaotecnica.exceptions.ProcessoAlreadyExistsException;
+import online.publicacoes.avaliacaotecnica.exceptions.ProcessAlreadyExistsException;
 import online.publicacoes.avaliacaotecnica.repositories.ProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -23,7 +22,7 @@ public class ProcessService {
 
     if (doesProcessoAlreadyExists(processDTO)) {
 
-      throw new ProcessoAlreadyExistsException(processDTO);
+      throw new ProcessAlreadyExistsException(processDTO);
     }
 
     Process process = repository.save(getProcessFromDTO(processDTO));
@@ -34,8 +33,8 @@ public class ProcessService {
   @Transactional
   public Set<ProcessDTO> save(Set<ProcessDTO> requestList) {
 
-    List<ProcessDTO> responseList = new ArrayList<>();
-    List<ProcessDTO> errorsList = new ArrayList<>();
+    Set<ProcessDTO> responseList = new HashSet<>();
+    Set<ProcessDTO> errorsList = new HashSet<>();
 
     for (ProcessDTO processDTO : requestList) {
 
@@ -43,7 +42,7 @@ public class ProcessService {
 
         responseList.add(save(processDTO));
 
-      } catch (ProcessoAlreadyExistsException e) {
+      } catch (ProcessAlreadyExistsException e) {
 
         errorsList.add(processDTO);
       }

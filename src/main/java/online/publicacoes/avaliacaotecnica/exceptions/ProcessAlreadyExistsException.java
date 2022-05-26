@@ -6,7 +6,7 @@ import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
 
 @RequiredArgsConstructor
 @Getter
-public class ProcessoAlreadyExistsException extends RuntimeException {
+public class ProcessAlreadyExistsException extends RuntimeException {
 
   private final ProcessDTO processDTO;
 }

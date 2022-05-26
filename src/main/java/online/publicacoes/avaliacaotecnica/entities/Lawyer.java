@@ -25,8 +25,8 @@ import java.util.Set;
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tb_attorney")
-public class Attorney {
+@Table(name = "tb_lawyer")
+public class Lawyer {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +34,6 @@ public class Attorney {
 
   @EqualsAndHashCode.Include private String username;
 
-  @OneToMany(mappedBy = "attorney")
+  @OneToMany(mappedBy = "lawyer")
   private Set<Process> processes = new HashSet<>();
 }
