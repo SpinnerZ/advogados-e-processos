@@ -1,11 +1,11 @@
-package online.publicacoes.avaliacaotecnica.factories;
+package online.publicacoes.avaliacaotecnica.fixturies;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import online.publicacoes.avaliacaotecnica.entities.Process;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ProcessFactory {
+public class ProcessFixture {
 
   public static Process getProcess() {
 

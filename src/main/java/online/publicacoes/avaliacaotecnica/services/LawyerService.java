@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+
 @Service
 public class LawyerService {
 
@@ -18,12 +20,13 @@ public class LawyerService {
   @Transactional
   public LawyerDTO create(String username) {
 
-    if (repository.findByUsername(username).isPresent()) {
+    if (Boolean.TRUE.equals(repository.existsByUsername(username))) {
 
       throw new LawyerAlreadyExistsException(username);
     }
 
-    Lawyer result = repository.save(Lawyer.builder().username(username).build());
+    Lawyer result =
+        repository.save(Lawyer.builder().username(username).processes(new HashSet<>()).build());
 
     return new LawyerDTO(result);
   }

@@ -1,7 +1,7 @@
 package online.publicacoes.avaliacaotecnica.repositories;
 
 import online.publicacoes.avaliacaotecnica.entities.Process;
-import online.publicacoes.avaliacaotecnica.factories.ProcessFactory;
+import online.publicacoes.avaliacaotecnica.fixturies.ProcessFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class ProcessRepositoryTest {
   @BeforeEach
   void setUp() {
 
-    process = ProcessFactory.getProcess();
+    process = ProcessFixture.getProcess();
   }
 
   @Test

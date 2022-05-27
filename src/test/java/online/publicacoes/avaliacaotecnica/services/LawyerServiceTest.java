@@ -2,10 +2,11 @@ package online.publicacoes.avaliacaotecnica.services;
 
 import online.publicacoes.avaliacaotecnica.dto.LawyerDTO;
 import online.publicacoes.avaliacaotecnica.entities.Lawyer;
+import online.publicacoes.avaliacaotecnica.entities.Process;
 import online.publicacoes.avaliacaotecnica.exceptions.LawyerAlreadyExistsException;
 import online.publicacoes.avaliacaotecnica.exceptions.LawyerNotFoundException;
-import online.publicacoes.avaliacaotecnica.factories.LawyerFactory;
-import online.publicacoes.avaliacaotecnica.factories.ProcessFactory;
+import online.publicacoes.avaliacaotecnica.fixturies.LawyerFixture;
+import online.publicacoes.avaliacaotecnica.fixturies.ProcessFixture;
 import online.publicacoes.avaliacaotecnica.repositories.LawyerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +41,7 @@ class LawyerServiceTest {
   @BeforeEach
   void setUp() {
 
-    lawyer = LawyerFactory.getLawyer();
+    lawyer = LawyerFixture.getLawyer();
 
     when(repository.save(any())).then(returnsFirstArg());
   }
@@ -53,7 +54,7 @@ class LawyerServiceTest {
     @DisplayName("Username is unique")
     void createShouldSaveLawyerWhenUsernameDoesNotExists() {
 
-      when(repository.findByUsername(username)).thenReturn(Optional.empty());
+      when(repository.existsByUsername(username)).thenReturn(false);
 
       LawyerDTO result = service.create(username);
 
@@ -65,7 +66,7 @@ class LawyerServiceTest {
     @DisplayName("Username already exists")
     void createShouldThrowLawyerAlreadyExistsExceptionWhenUsernameAlreadyExists() {
 
-      when(repository.findByUsername(username)).thenReturn(Optional.of(lawyer));
+      when(repository.existsByUsername(username)).thenReturn(true);
 
       assertThrows(LawyerAlreadyExistsException.class, () -> service.create(username));
       verify(repository, never()).save(any());
@@ -80,7 +81,10 @@ class LawyerServiceTest {
     @DisplayName("Username exists")
     void retrieveShouldReturnALawyerWhenItsUsernameIsFound() {
 
-      lawyer.getProcesses().add(ProcessFactory.getProcess());
+      Process process = ProcessFixture.getProcess();
+      process.setLawyer(lawyer);
+
+      lawyer.getProcesses().add(process);
 
       when(repository.findByUsername(username)).thenReturn(Optional.of(lawyer));
 
@@ -140,9 +144,9 @@ class LawyerServiceTest {
 
       when(repository.findByUsername(username)).thenReturn(Optional.empty());
 
-      LawyerAlreadyExistsException exception =
+      LawyerNotFoundException exception =
           assertThrows(
-              LawyerAlreadyExistsException.class, (() -> service.update(username, newUsername)));
+              LawyerNotFoundException.class, (() -> service.update(username, newUsername)));
       assertEquals(username, exception.getUsername());
       verify(repository).findByUsername(any());
       verify(repository, never()).save(any());

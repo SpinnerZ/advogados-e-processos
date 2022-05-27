@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface LawyerRepository extends JpaRepository<Lawyer, Long> {
 
+  Boolean existsByUsername(String username);
+
   Optional<Lawyer> findByUsername(String username);
 
   Long deleteByUsername(String username);

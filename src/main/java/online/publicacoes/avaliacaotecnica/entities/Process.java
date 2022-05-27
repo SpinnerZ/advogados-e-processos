@@ -36,6 +36,6 @@ public class Process {
   private Boolean archived;
 
   @ManyToOne
-  @JoinColumn(name = "attorney_id", nullable = false)
+  @JoinColumn(name = "lawyer_id", nullable = false)
   private Lawyer lawyer;
 }

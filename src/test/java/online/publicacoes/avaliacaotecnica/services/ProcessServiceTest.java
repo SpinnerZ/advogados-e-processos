@@ -4,7 +4,7 @@ import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
 import online.publicacoes.avaliacaotecnica.entities.Process;
 import online.publicacoes.avaliacaotecnica.exceptions.NotAllProcessosSavedException;
 import online.publicacoes.avaliacaotecnica.exceptions.ProcessAlreadyExistsException;
-import online.publicacoes.avaliacaotecnica.factories.ProcessFactory;
+import online.publicacoes.avaliacaotecnica.fixturies.ProcessFixture;
 import online.publicacoes.avaliacaotecnica.repositories.ProcessRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +38,7 @@ class ProcessServiceTest {
   @BeforeEach
   void setUp() {
 
-    process = ProcessFactory.getProcess();
+    process = ProcessFixture.getProcess();
 
     when(repository.save(any())).then(returnsFirstArg());
   }
@@ -53,7 +53,7 @@ class ProcessServiceTest {
     @BeforeEach
     void setUp() {
 
-      process2 = ProcessFactory.getProcess(2L);
+      process2 = ProcessFixture.getProcess(2L);
 
       processosRequestList = new HashSet<>();
       processosRequestList.add(new ProcessDTO(process));

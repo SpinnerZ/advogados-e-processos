@@ -1,14 +1,16 @@
-package online.publicacoes.avaliacaotecnica.factories;
+package online.publicacoes.avaliacaotecnica.fixturies;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import online.publicacoes.avaliacaotecnica.entities.Lawyer;
 
+import java.util.HashSet;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class LawyerFactory {
+public class LawyerFixture {
 
   public static Lawyer getLawyer() {
 
-    return Lawyer.builder().username("user.name").build();
+    return Lawyer.builder().username("user.name").processes(new HashSet<>()).build();
   }
 }

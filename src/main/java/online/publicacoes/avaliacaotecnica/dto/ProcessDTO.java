@@ -15,13 +15,13 @@ public class ProcessDTO {
   @NotNull @Positive private final Long number;
   private String defendant;
   private Boolean archived;
-  @JsonIgnore private String attorneyUserName;
+  @JsonIgnore private String lawyerUserName;
 
   public ProcessDTO(Process process) {
 
     this.number = process.getNumber();
     this.defendant = process.getDefendant();
     this.archived = process.getArchived();
-    this.attorneyUserName = process.getLawyer().getUsername();
+    this.lawyerUserName = process.getLawyer().getUsername();
   }
 }
