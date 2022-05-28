@@ -22,6 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -47,7 +48,6 @@ class LawyerServiceTest {
   }
 
   @Nested
-  @DisplayName("Save tests")
   class Save {
 
     @Test
@@ -74,7 +74,6 @@ class LawyerServiceTest {
   }
 
   @Nested
-  @DisplayName("Find tests")
   class Find {
 
     @Test
@@ -88,25 +87,28 @@ class LawyerServiceTest {
 
       when(repository.findByUsername(username)).thenReturn(Optional.of(lawyer));
 
-      LawyerDTO result = service.retrieve(username);
+      Optional<LawyerDTO> result = service.retrieve(username);
+      assertTrue(result.isPresent());
+
+      LawyerDTO dto = result.get();
 
       assertAll(
-          () -> assertEquals(username, result.getUsername()),
-          () -> assertEquals(1, result.getProcesses().size()));
+          () -> assertEquals(username, dto.getUsername()),
+          () -> assertEquals(1, dto.getProcesses().size()));
     }
 
     @Test
     @DisplayName("Username does not exists")
-    void retrieveShouldThrowLawyerNotFoundExceptionWhenUsernameIsNotFound() {
+    void retrieveShouldReturnAnEmptyOptionalWhenUsernameIsNotFound() {
 
       when(repository.findByUsername(username)).thenReturn(Optional.empty());
 
-      assertThrows(LawyerNotFoundException.class, () -> service.retrieve(username));
+      Optional<LawyerDTO> result = service.retrieve(username);
+      assertTrue(result.isEmpty());
     }
   }
 
   @Nested
-  @DisplayName("Update tests")
   class Update {
 
     String newUsername = "new.username";
@@ -154,7 +156,6 @@ class LawyerServiceTest {
   }
 
   @Nested
-  @DisplayName("Delete tests")
   class Delete {
 
     @Test

@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class LawyerService {
 
   @Autowired private LawyerRepository repository;
-  @Autowired private ProcessService processService;
 
   @Transactional
   public LawyerDTO create(String username) {
@@ -28,18 +28,15 @@ public class LawyerService {
     Lawyer result =
         repository.save(Lawyer.builder().username(username).processes(new HashSet<>()).build());
 
-    return new LawyerDTO(result);
+    return LawyerDTO.builder().username(result.getUsername()).build();
   }
 
   @Transactional(readOnly = true)
-  public LawyerDTO retrieve(String username) {
+  public Optional<LawyerDTO> retrieve(String username) {
 
-    Lawyer lawyer =
-        repository
-            .findByUsername(username)
-            .orElseThrow(() -> new LawyerNotFoundException(username));
+    Optional<Lawyer> lawyer = repository.findByUsername(username);
 
-    return new LawyerDTO(lawyer);
+    return lawyer.map(Lawyer::toDTO);
   }
 
   @Transactional
@@ -57,7 +54,7 @@ public class LawyerService {
     lawyer.setUsername(newUsername);
     lawyer = repository.save(lawyer);
 
-    return new LawyerDTO(lawyer);
+    return lawyer.toDTO();
   }
 
   @Transactional

@@ -39,7 +39,7 @@ public class LawyerController {
   @GetMapping("/{username}")
   public ResponseEntity<LawyerDTO> retrieve(@PathVariable @NotBlank String username) {
 
-    return ResponseEntity.ok(service.retrieve(username));
+    return ResponseEntity.of(service.retrieve(username));
   }
 
   @PatchMapping(value = "/{username}")

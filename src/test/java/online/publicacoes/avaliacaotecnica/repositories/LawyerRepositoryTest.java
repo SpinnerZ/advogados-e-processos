@@ -26,11 +26,11 @@ class LawyerRepositoryTest {
   }
 
   @Nested
-  class ExistsById {
+  class ExistsByUsername {
 
     @Test
     @DisplayName("Lawyer exists")
-    void existsByIdShoulReturnTrueWhenLawyerExists() {
+    void existsByUsernameShouldReturnTrueWhenLawyerExists() {
 
       repository.save(lawyer);
 
@@ -39,7 +39,7 @@ class LawyerRepositoryTest {
 
     @Test
     @DisplayName("Lawyer does not exists")
-    void existsByIdShouldReturnFalseWhenLAwyerDoesNotExists() {
+    void existsByUsernameShouldReturnFalseWhenLawyerDoesNotExists() {
 
       assertFalse(repository.existsByUsername(lawyer.getUsername()));
     }
@@ -69,7 +69,7 @@ class LawyerRepositoryTest {
   class DeleteByUsername {
 
     @Test
-    void deleteByUsernameShouldDeleteLwayer() {
+    void deleteByUsernameShouldDeleteLawyer() {
 
       Long id = repository.save(lawyer).getId();
 

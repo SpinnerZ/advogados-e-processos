@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import online.publicacoes.avaliacaotecnica.dto.LawyerDTO;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @ToString
 @Getter
@@ -36,4 +38,12 @@ public class Lawyer {
 
   @OneToMany(mappedBy = "lawyer")
   private Set<Process> processes = new HashSet<>();
+
+  public LawyerDTO toDTO() {
+
+    return LawyerDTO.builder()
+        .username(username)
+        .processes(processes.stream().map(Process::toDTO).collect(Collectors.toSet()))
+        .build();
+  }
 }

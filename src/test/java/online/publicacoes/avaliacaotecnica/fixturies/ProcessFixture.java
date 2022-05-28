@@ -9,11 +9,19 @@ public class ProcessFixture {
 
   public static Process getProcess() {
 
-    return Process.builder().number(1L).defendant("Réu").archived(true).build();
+    return Process.builder()
+        .number(1L)
+        .defendant("Defendant")
+        .archived(false)
+        .lawyer(LawyerFixture.getLawyer())
+        .build();
   }
 
   public static Process getProcess(long n) {
 
-    return Process.builder().number(n).defendant("Réu " + n).archived(true).build();
+    Process process = getProcess();
+    process.setDefendant("Defendant " + n);
+
+    return process;
   }
 }

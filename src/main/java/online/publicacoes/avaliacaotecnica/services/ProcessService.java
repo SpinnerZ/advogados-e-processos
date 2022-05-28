@@ -1,72 +1,67 @@
 package online.publicacoes.avaliacaotecnica.services;
 
 import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
-import online.publicacoes.avaliacaotecnica.entities.Process;
-import online.publicacoes.avaliacaotecnica.exceptions.NotAllProcessosSavedException;
-import online.publicacoes.avaliacaotecnica.exceptions.ProcessAlreadyExistsException;
+import online.publicacoes.avaliacaotecnica.dto.ProcessFilterDTO;
 import online.publicacoes.avaliacaotecnica.repositories.ProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class ProcessService {
 
   @Autowired private ProcessRepository repository;
+  @Autowired private LawyerService lawyerService;
 
   @Transactional
-  public ProcessDTO save(ProcessDTO processDTO) {
+  public ProcessDTO create(ProcessDTO processDTO) {
 
-    if (doesProcessoAlreadyExists(processDTO)) {
-
-      throw new ProcessAlreadyExistsException(processDTO);
-    }
-
-    Process process = repository.save(getProcessFromDTO(processDTO));
-
-    return new ProcessDTO(process);
+    return null;
   }
 
   @Transactional
-  public Set<ProcessDTO> save(Set<ProcessDTO> requestList) {
+  public List<ProcessDTO> create(Set<ProcessDTO> processDTOs) {
 
-    Set<ProcessDTO> responseList = new HashSet<>();
-    Set<ProcessDTO> errorsList = new HashSet<>();
-
-    for (ProcessDTO processDTO : requestList) {
-
-      try {
-
-        responseList.add(save(processDTO));
-
-      } catch (ProcessAlreadyExistsException e) {
-
-        errorsList.add(processDTO);
-      }
-    }
-
-    if (!errorsList.isEmpty()) {
-
-      throw new NotAllProcessosSavedException(responseList, errorsList);
-    }
-
-    return responseList;
+    return null;
   }
 
-  private boolean doesProcessoAlreadyExists(ProcessDTO processDTO) {
+  @Transactional(readOnly = true)
+  public List<ProcessDTO> retrieve() {
 
-    return repository.existsByNumber(processDTO.getNumber());
+    return null;
   }
 
-  private Process getProcessFromDTO(ProcessDTO processDTO) {
+  @Transactional(readOnly = true)
+  public Optional<ProcessDTO> retrieve(Long number) {
 
-    return Process.builder()
-        .archived(processDTO.getArchived())
-        .number(processDTO.getNumber())
-        .defendant(processDTO.getDefendant())
-        .build();
+    return null;
+  }
+
+  @Transactional(readOnly = true)
+  public List<ProcessDTO> retrieve(ProcessFilterDTO filter) {
+
+    return null;
+  }
+
+  @Transactional
+  public ProcessDTO update(Long number, String defendant) {
+
+    return null;
+  }
+
+  @Transactional
+  public ProcessDTO update(ProcessDTO processDTO) {
+
+    return null;
+  }
+
+  @Transactional
+  public Void delete(Long number) {
+
+    return null;
   }
 }

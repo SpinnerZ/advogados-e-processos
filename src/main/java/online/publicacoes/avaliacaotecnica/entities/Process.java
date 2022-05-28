@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,4 +39,13 @@ public class Process {
   @ManyToOne
   @JoinColumn(name = "lawyer_id", nullable = false)
   private Lawyer lawyer;
+
+  public ProcessDTO toDTO() {
+
+    return ProcessDTO.builder()
+        .defendant(defendant)
+        .archived(archived)
+        .lawyerUsername(lawyer.getUsername())
+        .build();
+  }
 }
