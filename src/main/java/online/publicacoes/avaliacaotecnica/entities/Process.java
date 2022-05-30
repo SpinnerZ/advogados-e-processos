@@ -43,6 +43,7 @@ public class Process {
   public ProcessDTO toDTO() {
 
     return ProcessDTO.builder()
+        .number(number)
         .defendant(defendant)
         .archived(archived)
         .lawyerUsername(lawyer.getUsername())

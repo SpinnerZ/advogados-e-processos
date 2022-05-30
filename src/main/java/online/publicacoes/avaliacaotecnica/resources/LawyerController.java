@@ -24,7 +24,8 @@ public class LawyerController {
   @Autowired LawyerService service;
 
   @PostMapping("/{username}")
-  public ResponseEntity<LawyerDTO> create(@PathVariable @NotBlank String username) {
+  public ResponseEntity<LawyerDTO> create(
+      @PathVariable @NotBlank(message = "Lawyer username cannot be blank") String username) {
 
     LawyerDTO result = service.create(username);
     URI uri =
@@ -37,7 +38,8 @@ public class LawyerController {
   }
 
   @GetMapping("/{username}")
-  public ResponseEntity<LawyerDTO> retrieve(@PathVariable @NotBlank String username) {
+  public ResponseEntity<LawyerDTO> retrieve(
+      @PathVariable @NotBlank(message = "Lawyer username cannot be blank") String username) {
 
     return ResponseEntity.of(service.retrieve(username));
   }
@@ -50,7 +52,8 @@ public class LawyerController {
   }
 
   @DeleteMapping("/{username}")
-  public ResponseEntity<Void> delete(@PathVariable @NotBlank String username) {
+  public ResponseEntity<Void> delete(
+      @PathVariable @NotBlank(message = "Lawyer username cannot be blank") String username) {
 
     service.delete(username);
 

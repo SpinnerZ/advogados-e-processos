@@ -45,7 +45,7 @@ public class ProcessController {
   @PostMapping("/mass")
   public ResponseEntity<List<ProcessDTO>> createAll(@RequestBody @Valid Set<ProcessDTO> dtos) {
 
-    List<ProcessDTO> result = service.retrieve();
+    List<ProcessDTO> result = service.create(dtos);
 
     URI uri =
         ServletUriComponentsBuilder.fromCurrentRequest()
@@ -63,7 +63,8 @@ public class ProcessController {
   }
 
   @GetMapping("/number/{number}")
-  public ResponseEntity<ProcessDTO> retrieveOne(@PathVariable @Positive Long number) {
+  public ResponseEntity<ProcessDTO> retrieveOne(
+      @PathVariable @Positive(message = "Process number must be a positive number") Long number) {
 
     return ResponseEntity.of(service.retrieve(number));
   }
@@ -81,7 +82,8 @@ public class ProcessController {
 
   @PatchMapping("/{number}")
   public ResponseEntity<ProcessDTO> updateDefendant(
-      @PathVariable @Positive Long number, @RequestParam String defendant) {
+      @PathVariable @Positive(message = "Process number must be a positive number") Long number,
+      @RequestParam String defendant) {
 
     return ResponseEntity.ok(service.update(number, defendant));
   }

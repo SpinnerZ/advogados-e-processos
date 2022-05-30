@@ -7,5 +7,6 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class UsernameDTO {
 
-  @NotBlank private final String username;
+  @NotBlank(message = "Lawyer username cannot be blank")
+  private final String username;
 }

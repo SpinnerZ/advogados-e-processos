@@ -11,6 +11,8 @@ import java.util.Set;
 @Builder
 public class LawyerDTO {
 
-  @NotBlank private final String username;
+  @NotBlank(message = "Lawyer username cannot be blank")
+  private final String username;
+
   private Set<ProcessDTO> processes = new HashSet<>();
 }

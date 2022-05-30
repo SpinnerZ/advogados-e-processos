@@ -19,8 +19,15 @@ public class ProcessFixture {
 
   public static Process getProcess(long n) {
 
-    Process process = getProcess();
-    process.setDefendant("Defendant " + n);
+    Process process =
+        Process.builder()
+            .number(n)
+            .defendant("Defendant " + n)
+            .archived(false)
+            .lawyer(LawyerFixture.getLawyer())
+            .build();
+
+    process.getLawyer().setUsername("user.name" + n);
 
     return process;
   }

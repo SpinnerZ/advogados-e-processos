@@ -115,7 +115,7 @@ class LawyerServiceTest {
 
     @Test
     @DisplayName("Old username exists and new username is unique")
-    void updateShoudUpdateUsernameWhenUsernameExistsAndNewUsernameIsUnique() {
+    void updateShouldUpdateUsernameWhenUsernameExistsAndNewUsernameIsUnique() {
 
       when(repository.findByUsername(username)).thenReturn(Optional.of(lawyer));
       when(repository.findByUsername(newUsername)).thenReturn(Optional.empty());

@@ -4,12 +4,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import online.publicacoes.avaliacaotecnica.dto.ProcessDTO;
 
-import java.util.Set;
-
 @RequiredArgsConstructor
 @Getter
-public class NotAllProcessosSavedException extends RuntimeException {
+public class ProcessCreatedInsteadOfUpdatedException extends RuntimeException {
 
-  private final Set<ProcessDTO> success;
-  private final Set<ProcessDTO> failed;
+  private final ProcessDTO processDTO;
 }

@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -34,7 +36,7 @@ class LawyerControllerTest {
   @BeforeEach
   void setUp() {
 
-    lawyerDTO = new LawyerDTO(LawyerFixture.getLawyer());
+    lawyerDTO = LawyerFixture.getLawyer().toDTO();
   }
 
   @Test
@@ -55,7 +57,7 @@ class LawyerControllerTest {
   @SneakyThrows
   void getShouldReturnALawyer() {
 
-    when(service.retrieve(username)).thenReturn(lawyerDTO);
+    when(service.retrieve(username)).thenReturn(Optional.of(lawyerDTO));
 
     mockMvc
         .perform(get(resourceRoot + username))

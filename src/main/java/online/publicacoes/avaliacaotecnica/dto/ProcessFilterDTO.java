@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class ProcessFilterDTO {
 
-    private String username;
-    private Boolean archived;
+  private final String username;
+  private final Boolean archived;
 }
